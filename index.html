@@ -479,6 +479,14 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="nrp">NRP (10 digits):</label>
+            <input style="background-color: rgba(255, 255, 255, 0.08); color:white;" type="text" class="form-control"
+              id="nrp" required>
+            <div class="invalid-feedback">
+              Please enter a valid 10-digit NRP.
+            </div>
+          </div>
+          <div class="form-group">
             <label for="message">Message</label>
             <textarea style="background-color: rgba(255, 255, 255, 0.08); color:white;" class="form-control"
               id="message" rows="4" required></textarea>
@@ -489,26 +497,55 @@
           <button type="submit" class="btn btn-primary">Send Message</button>
         </form>
       </div>
-    </div>
 
-    <script>
-      document.getElementById("contactForm").addEventListener("submit", function (event) {
-        event.preventDefault();
-        if (this.checkValidity() === false) {
-          event.stopPropagation();
-        } else {
-          const phoneNumber = "+6287750347822";
-          const names = document.getElementById("names").value;
-          const message = document.getElementById("message").value;
-          const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=Haloo Viqi, Aku ${names}. ${message}`;
-          window.open(whatsappURL, "_blank");
-        }
-        this.classList.add("was-validated");
-      });
-    </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+      <script>
+        document.getElementById("contactForm").addEventListener("submit", function (event) {
+          event.preventDefault();
+          var nrp = document.getElementById("nrp");
+          if (nrp.value == "") {
+            nrp.focus();
+            nrp.placeholder = "Contoh : 5026221001"
+            alert("NRP harus diisi!");
+            document.getElementById("nrp").setCustomValidity("Please enter a valid 10-digit NRP.");
+            this.classList.add("was-validated");
+            return false;
+          }
+
+          if (nrp.value.length != 10) {
+            nrp.focus();
+            alert("NRP harus 10 digit, Anda memasukkan " + nrp.value.length + " digit");
+            document.getElementById("nrp").setCustomValidity("Please enter a valid 10-digit NRP.");
+            this.classList.add("was-validated");
+
+            return false;
+          }
+
+          if (isNaN(nrp.value) == true) {
+            nrp.focus();
+            msg.innerHTML = "NRP harus Angka"
+            document.getElementById("nrp").setCustomValidity("Please enter a valid 10-digit NRP.");
+            this.classList.add("was-validated");
+            return false;
+          }
+          if (this.checkValidity() === false) {
+            event.stopPropagation();
+            document.getElementById("nrp").setCustomValidity("");
+            document.getElementById("nrp").classList.add("is-valid");
+          } else {
+            const phoneNumber = "+6287750347822";
+            const nrp = document.getElementById("nrp").value;
+            const names = document.getElementById("names").value;
+            const message = document.getElementById("message").value;
+            const whatsappURL = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=Haloo Viqi, Aku ${names} NRP ${nrp}. ${message}`;
+            window.open(whatsappURL, "_blank");
+          }
+          this.classList.add("was-validated");
+        });
+      </script>
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     </div>
   </section><!-- End Contact Section -->
